@@ -22,7 +22,7 @@
   documentName: "ОТЧЁТ ПО ЛАБОРАТОРНЫМ РАБОТАМ",
   group: "ГРУППА",
   city: "ГОРОД",
-   object: "Основы проектной деятельности",
+  object: "ПРЕДМЕТ",
 ) = {
   set text(font: "Times New Roman", size: 12pt, lang: "ru", hyphenate: false)
   set page(
@@ -68,7 +68,7 @@
     row-gutter: 3pt,
     grid.cell([РАБОТУ ВЫПОЛНИЛ], colspan: 2), text(2.5em, ""), "",
 
-    "СТУДЕНТ гр №", align(center, group), "", align(center, authors.join("\n")),
+    "СТУДЕНТ гр №", align(center, group), "", align(center, stack(dir: ttb, ..authors)),
     line(length: 0%),
     line(length: 100%),
     line(length: 100%),
