@@ -68,7 +68,8 @@
     row-gutter: 3pt,
     grid.cell([РАБОТУ ВЫПОЛНИЛ], colspan: 2), text(2.5em, ""), "",
 
-    "СТУДЕНТ гр №", align(center, group), "", align(center, stack(dir: ttb, ..authors)),
+       "СТУДЕНТ гр №", align(center, group), "", align(center, authors.join("\n")),
+
     line(length: 0%),
     line(length: 100%),
     line(length: 100%),
