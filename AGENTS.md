@@ -1,44 +1,43 @@
 # AGENTS.md
 
 ## Build Commands
-- Build PDF: `make` or `make docs` (runs `typst compile --root .. docs/index.typ build/index.pdf`)
-- Clean: `make clean` (removes build/ directory)
-- No lint/test commands (document generation project)
+- Build PDF: `cd <subfolder> && make` (compiles `docs/index.typ` → `build/index.pdf`)
+- Clean build: `make clean` (removes build/ directory)
+- Single document: `typst compile --root .. docs/index.typ build/index.pdf` (from subfolder)
+- No tests/lints (document generation project using Typst 0.14.0)
 
 ## Project Structure
-- Each subfolder contains a separate document (answers_theme1/, report_practice1/, etc.)
-- docs/index.typ: Main document file
-- docs/lib/: Shared libraries (gost.typ, titlepage.typ)
-- docs/bibl.yml: Bibliography in YAML format
-- Makefile: Build configuration
+- Each subfolder = independent document (answers_theme*, report_practice*, questions_theme*)
+- `docs/index.typ` - main document file
+- `docs/lib/gost.typ` - GOST formatting library (Russian standard)
+- `docs/lib/titlepage.typ` - title page template
+- `docs/bibl.yml` - bibliography (YAML format, GOST-compliant)
 
-## Code Style Guidelines
+## Code Style
 
 ### Document Structure
-- Import: `#import "lib/gost.typ": init` for GOST compliance
-- Initialize: `init(titlepage(...))` wrapper around document body
-- Title page: `titlepage()` with parameters (authors, city, department, documentName, etc.)
-- Headings: `= Level 1`, `== Level 2`, etc. (auto-numbered "1.1" format)
+```typst
+#import "lib/gost.typ": init
+#show: init
+// Content starts here
+```
+- GOST init must wrap entire document body
+- Headings: `= Level 1`, `== Level 2` (auto-numbered "1.1")
+- Title page parameters: authors, city, department, documentName, education, group, teachers, position
 
-### Typography
-- Font: Times New Roman (14pt body, 12pt title page)
-- Language: Russian (ru) with hyphenation enabled
-- Paragraphs: Justified, 1.2em leading, 1.25cm first-line indent
-- Code blocks: JetBrains Mono 10pt, left-aligned
+### Typography & Formatting
+- Font: Times New Roman 14pt, Russian (ru) with hyphenation
+- Paragraphs: justified, 1.2em leading, 1.25cm first-line indent
+- Code: JetBrains Mono 10pt, left-aligned, no justify
+- Lists: `---` marker, 1.25cm indent
+- Figures: "Рисунок" (images), "Таблица" (tables, caption on top)
 
-### Figures & Tables
-- Images: Supplement "Рисунок", Tables: "Таблица" (caption on top)
-- References: Auto-numbered with custom formatting
-
-### Bibliography
-- Format: YAML in bibl.yml (fields: type, title, author, date, publisher, isbn/doi)
-- Citation style: GOST-compliant
+### Bibliography (bibl.yml)
+- Required fields: type, title, author, date
 - Types: Book, Article, Thesis, Patent
+- Optional: publisher, serial-number (isbn/doi), page-total, url
+- Use YAML syntax - validate before building to avoid compile errors
 
-### Naming Conventions
-- Files: snake_case (index.typ, gost.typ, titlepage.typ)
-- Functions/Variables: camelCase (init, titlepage, ch)
-
-### Error Handling
-- Typst handles compilation errors automatically
-- Manually validate YAML bibliography syntax before building
+### Naming
+- Files: snake_case (index.typ, gost.typ)
+- Functions: camelCase (init, titlepage, ch)
