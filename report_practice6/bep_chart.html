@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white;
+      font-family: 'Times New Roman', serif;
+    }
+    .chart-container {
+      width: 800px;
+      height: 600px;
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-container">
+    <canvas id="bepChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('bepChart').getContext('2d');
+    
+    // Data generation
+    const clients = Array.from({length: 16}, (_, i) => i); // 0 to 15
+    const fc = 170000;
+    const vcPerClient = 3000;
+    const price = 25000;
+
+    const fixedCosts = clients.map(() => fc);
+    const totalCosts = clients.map(q => fc + vcPerClient * q);
+    const totalRevenue = clients.map(q => price * q);
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: clients,
+        datasets: [
+          {
+            label: 'Выручка (Total Revenue)',
+            data: totalRevenue,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderWidth: 3,
+            tension: 0.1
+          },
+          {
+            label: 'Общие затраты (Total Costs)',
+            data: totalCosts,
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderWidth: 3,
+            tension: 0.1
+          },
+          {
+            label: 'Постоянные затраты (Fixed Costs)',
+            data: fixedCosts,
+            borderColor: 'rgb(201, 203, 207)',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            tension: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'График точки безубыточности (BEP)',
+            font: {
+              size: 24,
+              family: 'Times New Roman'
+            },
+            color: 'black'
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 16,
+                family: 'Times New Roman'
+              },
+              color: 'black'
+            }
+          },
+          annotation: {
+             // We'd need the annotation plugin for lines, but we can do without complex plugins for now
+             // or just trust the visual intersection.
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Количество клиентов (шт.)',
+              font: {
+                size: 18,
+                family: 'Times New Roman'
+              },
+              color: 'black'
+            },
+            ticks: {
+              font: {
+                size: 14
+              },
+              color: 'black'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Сумма (руб.)',
+              font: {
+                size: 18,
+                family: 'Times New Roman'
+              },
+              color: 'black'
+            },
+            ticks: {
+              font: {
+                size: 14
+              },
+              color: 'black',
+              callback: function(value) {
+                return value / 1000 + ' тыс.';
+              }
+            },
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
