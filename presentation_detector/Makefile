@@ -1,0 +1,10 @@
+.PHONY: build clean watch
+
+build:
+	typst compile main.typ
+
+watch:
+	typst watch main.typ
+
+clean:
+	rm -f main.pdf
